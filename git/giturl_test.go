@@ -1,4 +1,4 @@
-package model
+package git
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -10,29 +10,29 @@ func TestParseGitUrlSuccess(t *testing.T) {
 	assert.Equal(t, "github.com", gitUrl.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrl.Org)
 	assert.Equal(t, "sd-repo", gitUrl.Repo)
-	assert.Equal(t, "test", gitUrl.Branch)
 	assert.Equal(t, "model/giturl_test.go", gitUrl.Path)
+	assert.Equal(t, "test", gitUrl.Branch)
 
 	var gitUrlNoPathNoBranch, _ = New("git@github.com:screwdriver-cd/sd-repo.git")
 	assert.Equal(t, "github.com", gitUrlNoPathNoBranch.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrlNoPathNoBranch.Org)
 	assert.Equal(t, "sd-repo", gitUrlNoPathNoBranch.Repo)
-	assert.Equal(t, "master", gitUrlNoPathNoBranch.Branch)
 	assert.Equal(t, "", gitUrlNoPathNoBranch.Path)
+	assert.Equal(t, "master", gitUrlNoPathNoBranch.Branch)
 
 	var gitUrlWeirdBranch, _ = New("git@gitgit.com:screwdriver-cd/sd-repo.git##test")
 	assert.Equal(t, "gitgit.com", gitUrlWeirdBranch.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrlWeirdBranch.Org)
 	assert.Equal(t, "sd-repo", gitUrlWeirdBranch.Repo)
-	assert.Equal(t, "#test", gitUrlWeirdBranch.Branch)
 	assert.Equal(t, "", gitUrlWeirdBranch.Path)
+	assert.Equal(t, "#test", gitUrlWeirdBranch.Branch)
 
 	var gitUrlWeirdPath, _ = New("git@github.com:screwdriver-cd//sd-repo.git//a/bb/c.xml")
 	assert.Equal(t, "github.com", gitUrlWeirdPath.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrlWeirdPath.Org)
 	assert.Equal(t, "sd-repo", gitUrlWeirdPath.Repo)
-	assert.Equal(t, "master", gitUrlWeirdPath.Branch)
 	assert.Equal(t, "a/bb/c.xml", gitUrlWeirdPath.Path)
+	assert.Equal(t, "master", gitUrlWeirdPath.Branch)
 }
 
 func TestParseGitUrlError(t *testing.T) {

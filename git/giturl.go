@@ -1,4 +1,4 @@
-package model
+package git
 
 import (
 	"fmt"
@@ -10,8 +10,8 @@ type GitUrl struct {
 	Host   string
 	Org    string
 	Repo   string
-	Branch string
 	Path   string
+	Branch string
 }
 
 func (git *GitUrl) GetCloneInfo() (url, branch string) {
@@ -32,8 +32,8 @@ func New(gitUrlStr string) (*GitUrl, error) {
 		Host:   parseResult[1],
 		Org:    parseResult[2],
 		Repo:   parseResult[3],
-		Branch: parseResult[5],
 		Path:   parseResult[4],
+		Branch: parseResult[5],
 	}
 
 	if gitUrl.Branch == "" {
