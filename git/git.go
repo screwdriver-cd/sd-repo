@@ -14,10 +14,12 @@ type GitUrl struct {
 	Branch string
 }
 
+// GetCloneInfo returns the url and branch of the GitUrl
 func (git *GitUrl) GetCloneInfo() (url, branch string) {
 	return fmt.Sprintf("git@%+s:%+s/%+s.git", git.Host, git.Org, git.Repo), git.Branch
 }
 
+// New validates the gitUrlStr and returns a new GitUrl object
 func New(gitUrlStr string) (*GitUrl, error) {
 	// This would match something like git@github.com:org/repo.git/path#branch
 	// path and branch are optional. If not given, default values are "" and "master"
@@ -25,7 +27,7 @@ func New(gitUrlStr string) (*GitUrl, error) {
 	parseResult := gitUrlRegex.FindStringSubmatch(gitUrlStr)
 
 	if parseResult == nil {
-		return nil, fmt.Errorf("Error: not a valid git url %+s", gitUrlStr)
+		return nil, fmt.Errorf("Not a valid git url %+s", gitUrlStr)
 	}
 
 	gitUrl := GitUrl{

@@ -39,25 +39,25 @@ func TestParseGitUrlError(t *testing.T) {
 	var gitUrlBad1, err1 = New("git@github.com::screwdriver-cd/sd-repo.git/model/giturl_test.go#test")
 	assert.Nil(t, gitUrlBad1)
 	if assert.Error(t, err1, "should return error on invalid git config") {
-		assert.Equal(t, "Error: not a valid git url git@github.com::screwdriver-cd/sd-repo.git/model/giturl_test.go#test", err1.Error())
+		assert.Equal(t, "Not a valid git url git@github.com::screwdriver-cd/sd-repo.git/model/giturl_test.go#test", err1.Error())
 	}
 
 	var gitUrlBad2, err2 = New("git@github.com:sd-repo.git/model/giturl_test.go#test")
 	assert.Nil(t, gitUrlBad2)
 	if assert.Error(t, err2, "should return error on invalid git config") {
-		assert.Equal(t, "Error: not a valid git url git@github.com:sd-repo.git/model/giturl_test.go#test", err2.Error())
+		assert.Equal(t, "Not a valid git url git@github.com:sd-repo.git/model/giturl_test.go#test", err2.Error())
 	}
 
 	var gitUrlBad3, err3 = New("git@github.com:a/b/model/giturl_test.git")
 	assert.Nil(t, gitUrlBad3)
 	if assert.Error(t, err3, "should return error on invalid git config") {
-		assert.Equal(t, "Error: not a valid git url git@github.com:a/b/model/giturl_test.git", err3.Error())
+		assert.Equal(t, "Not a valid git url git@github.com:a/b/model/giturl_test.git", err3.Error())
 	}
 
 	var gitUrlBad4, err4 = New("github.com:a/b.git#branch")
 	assert.Nil(t, gitUrlBad4)
 	if assert.Error(t, err4, "should return error on invalid git config") {
-		assert.Equal(t, "Error: not a valid git url github.com:a/b.git#branch", err4.Error())
+		assert.Equal(t, "Not a valid git url github.com:a/b.git#branch", err4.Error())
 	}
 }
 
