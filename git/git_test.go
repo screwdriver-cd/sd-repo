@@ -7,6 +7,7 @@ import (
 
 func TestParseGitUrlSuccess(t *testing.T) {
 	gitUrl, _ := New("git@github.com:screwdriver-cd/sd-repo.git/model/giturl_test.go#test")
+	assert.Equal(t, "git", gitUrl.Protocol)
 	assert.Equal(t, "github.com", gitUrl.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrl.Org)
 	assert.Equal(t, "sd-repo", gitUrl.Repo)
@@ -14,6 +15,7 @@ func TestParseGitUrlSuccess(t *testing.T) {
 	assert.Equal(t, "test", gitUrl.Branch)
 
 	gitUrlNoPathNoBranch, _ := New("git@github.com:screwdriver-cd/sd-repo.git")
+	assert.Equal(t, "git", gitUrlNoPathNoBranch.Protocol)
 	assert.Equal(t, "github.com", gitUrlNoPathNoBranch.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrlNoPathNoBranch.Org)
 	assert.Equal(t, "sd-repo", gitUrlNoPathNoBranch.Repo)
@@ -21,6 +23,7 @@ func TestParseGitUrlSuccess(t *testing.T) {
 	assert.Equal(t, "master", gitUrlNoPathNoBranch.Branch)
 
 	gitUrlHttps, _ := New("https://github.com/screwdriver-cd/sd-repo.git")
+	assert.Equal(t, "https", gitUrlHttps.Protocol)
 	assert.Equal(t, "github.com", gitUrlHttps.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrlNoPathNoBranch.Org)
 	assert.Equal(t, "sd-repo", gitUrlHttps.Repo)
@@ -28,6 +31,7 @@ func TestParseGitUrlSuccess(t *testing.T) {
 	assert.Equal(t, "master", gitUrlHttps.Branch)
 
 	gitUrlWeirdBranch, _ := New("git@gitgit.com:screwdriver-cd/sd-repo.git##test")
+	assert.Equal(t, "git", gitUrlWeirdBranch.Protocol)
 	assert.Equal(t, "gitgit.com", gitUrlWeirdBranch.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrlWeirdBranch.Org)
 	assert.Equal(t, "sd-repo", gitUrlWeirdBranch.Repo)
@@ -35,6 +39,7 @@ func TestParseGitUrlSuccess(t *testing.T) {
 	assert.Equal(t, "#test", gitUrlWeirdBranch.Branch)
 
 	gitUrlWeirdPath, _ := New("git@github.com:screwdriver-cd//sd-repo.git//a/bb/c.xml")
+	assert.Equal(t, "git", gitUrlWeirdBranch.Protocol)
 	assert.Equal(t, "github.com", gitUrlWeirdPath.Host)
 	assert.Equal(t, "screwdriver-cd", gitUrlWeirdPath.Org)
 	assert.Equal(t, "sd-repo", gitUrlWeirdPath.Repo)
@@ -80,4 +85,10 @@ func TestGetCloneInfo(t *testing.T) {
 	gitCloneUrl2, branch2 := gitUrl2.GetCloneInfo()
 	assert.Equal(t, "git@gitgit.com:screwdriver-cd/sd-repo2.git", gitCloneUrl2)
 	assert.Equal(t, "master", branch2)
+
+	gitUrlHttps, err3 := New("https://github.com/screwdriver-cd/sd-repo.git/manifest.xml")
+	assert.Nil(t, err3)
+	gitCloneHttps, branch3 := gitUrlHttps.GetCloneInfo()
+	assert.Equal(t, "https://github.com/screwdriver-cd/sd-repo.git", gitCloneHttps)
+	assert.Equal(t, "master", branch3)
 }

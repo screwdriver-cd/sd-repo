@@ -7,15 +7,20 @@ import (
 )
 
 type GitUrl struct {
-	Host   string
-	Org    string
-	Repo   string
-	Path   string
-	Branch string
+	Protocol string
+	Host     string
+	Org      string
+	Repo     string
+	Path     string
+	Branch   string
 }
 
 // GetCloneInfo returns the url and branch of the GitUrl
 func (git *GitUrl) GetCloneInfo() (url, branch string) {
+	if git.Protocol == "https" {
+		return fmt.Sprintf("https://%+s/%+s/%+s.git", git.Host, git.Org, git.Repo), git.Branch
+	}
+	
 	return fmt.Sprintf("git@%+s:%+s/%+s.git", git.Host, git.Org, git.Repo), git.Branch
 }
 
@@ -23,19 +28,20 @@ func (git *GitUrl) GetCloneInfo() (url, branch string) {
 func New(gitUrlStr string) (*GitUrl, error) {
 	// This would match something like git@github.com:org/repo.git/path#branch
 	// path and branch are optional. If not given, default values are "" and "master"
-	gitUrlRegex, _ := regexp.Compile("^(?:git@|https://)([^/:#]+)(?::|/)([^/:#]+)/+([^/:#]+)\\.git(/[^#]*)?(#.+)?")
+	gitUrlRegex, _ := regexp.Compile("^(git|https)(?:@|://)([^/:#]+)(?::|/)([^/:#]+)/+([^/:#]+)\\.git(/[^#]*)?(#.+)?")
 	parseResult := gitUrlRegex.FindStringSubmatch(gitUrlStr)
 
 	if parseResult == nil {
 		return nil, fmt.Errorf("Not a valid git url %+s", gitUrlStr)
 	}
 
-	gitUrl := GitUrl{
-		Host:   parseResult[1],
-		Org:    parseResult[2],
-		Repo:   parseResult[3],
-		Path:   parseResult[4],
-		Branch: parseResult[5],
+	gitUrl := GitUrl {
+		Protocol: parseResult[1],
+		Host:     parseResult[2],
+		Org:      parseResult[3],
+		Repo:     parseResult[4],
+		Path:     parseResult[5],
+		Branch:   parseResult[6],
 	}
 
 	if gitUrl.Branch == "" {
