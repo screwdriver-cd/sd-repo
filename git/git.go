@@ -23,7 +23,7 @@ func (git *GitUrl) GetCloneInfo() (url, branch string) {
 func New(gitUrlStr string) (*GitUrl, error) {
 	// This would match something like git@github.com:org/repo.git/path#branch
 	// path and branch are optional. If not given, default values are "" and "master"
-	gitUrlRegex, _ := regexp.Compile("^git@([^/:#]+):([^/:#]+)/+([^/:#]+)\\.git(/[^#]*)?(#.+)?")
+	gitUrlRegex, _ := regexp.Compile("^(?:git@|https://)([^/:#]+)(?::|/)([^/:#]+)/+([^/:#]+)\\.git(/[^#]*)?(#.+)?")
 	parseResult := gitUrlRegex.FindStringSubmatch(gitUrlStr)
 
 	if parseResult == nil {
