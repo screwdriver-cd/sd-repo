@@ -11,8 +11,8 @@ import(
 )
 
 const (
-    testManifestUrl = "git@github.com:filbird/v4-repo-test.git/default.xml"
-    testSourceRepo = "filbird/v4-repo-test.git"
+    testManifestUrl string= "git@github.com:filbird/v4-repo-test.git/default.xml"
+    testSourceRepo string= "filbird/v4-repo-test.git"
 )
 
 var (
