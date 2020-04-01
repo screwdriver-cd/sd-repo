@@ -7,10 +7,9 @@ import (
   "os"
   "os/exec"
   "strings"
+  "regexp"
+  "strconv"
 )
-
-// manifestPath is generated following successful execution of "repo init"
-const manifestPath string = ".repo/manifest.xml"
 
 var (
     execCommand = exec.Command
@@ -59,6 +58,29 @@ func Sync() error {
 // ParseManifestFile parses the manifest file located in manifestPath
 // If valid, a Manifest object is returned
 func ParseManifestFile() (*Manifest, error) {
+    manifestPath := ".repo/manifests/manifest.xml"
+    cmd := execCommand("repo", "version")
+    output, err := cmd.CombinedOutput()
+    if (err != nil) {
+        return nil, err
+    }
+
+    versionRegex := regexp.MustCompile(`repo version v(\d+).(\d+)`)
+    matched := versionRegex.FindStringSubmatch(string(output[:]))
+	if (len(matched) != 0) {
+		majorVersion, err := strconv.Atoi(matched[1])
+		if (err != nil) {
+			return nil, err
+		}
+		minorVersion, err := strconv.Atoi(matched[2])
+		if (err != nil) {
+			return nil, err
+		}
+		if (majorVersion < 2 || majorVersion == 2 && minorVersion < 4) {
+			manifestPath = ".repo/manifest.xml";
+		}
+    }
+
     xmlFile, err := open(manifestPath)
     if err != nil {
         return nil, err

@@ -55,6 +55,9 @@ func TestParseManifestFile(t *testing.T) {
     oldOpen := open
     defer func() { open = oldOpen }()
 
+    execCommand = fakeExecCommand
+    defer func() { execCommand = exec.Command }()
+
     open = func(f string) (*os.File, error) {
 		return os.Open("../data/manifest.xml")
 	}
@@ -70,6 +73,10 @@ func TestParseManifestFile(t *testing.T) {
 func TestParseManifestFileOpenError(t *testing.T) {
     oldOpen := open
     defer func() { open = oldOpen }()
+
+    execCommand = fakeExecCommand
+    defer func() { execCommand = exec.Command }()
+
     open = func(f string) (*os.File, error) {
 		return nil, fmt.Errorf("Spooky error")
 	}
@@ -83,6 +90,10 @@ func TestParseManifestFileOpenError(t *testing.T) {
 func TestParseManifestFileReadAllError(t *testing.T) {
     oldReadAll := readAll
     defer func() { readAll = oldReadAll }()
+
+    execCommand = fakeExecCommand
+    defer func() { execCommand = exec.Command }()
+
     readAll = func(r io.Reader) ([]byte, error) {
 		return []byte{}, fmt.Errorf("Spooky error")
 	}
@@ -96,6 +107,10 @@ func TestParseManifestFileReadAllError(t *testing.T) {
 func TestParseManifestUnmarshlError(t *testing.T) {
     oldUnmarshal := unmarshal
     defer func() { unmarshal = oldUnmarshal }()
+
+    execCommand = fakeExecCommand
+    defer func() { execCommand = exec.Command }()
+
     unmarshal = func(data []byte, v interface{}) error {
 		return fmt.Errorf("Spooky error")
 	}
@@ -141,7 +156,10 @@ func TestHelperProcess(t *testing.T) {
 	if len(args) >= 2 && args[0] == "repo" {
 		switch args[1] {
 		default:
-			os.Exit(255)
+            os.Exit(255)
+        case "version":
+            fmt.Println("repo version v2.4.334")
+            return
 		case "init":
             fmt.Println("Initializing repo manifest directory")
             return

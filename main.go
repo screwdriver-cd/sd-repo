@@ -12,7 +12,7 @@ import(
 
 // sourcePathFile is the file in which the checked out source path
 // will be written to
-const sourcePathFile = "sourcePath"
+const sourcePathFile string= "sourcePath"
 
 var (
     newGitUrl = git.New
