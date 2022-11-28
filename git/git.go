@@ -20,7 +20,7 @@ func (git *GitUrl) GetCloneInfo() (url, branch string) {
 	if git.Protocol == "https" {
 		return fmt.Sprintf("https://%+s/%+s/%+s.git", git.Host, git.Org, git.Repo), git.Branch
 	}
-	
+
 	return fmt.Sprintf("git@%+s:%+s/%+s.git", git.Host, git.Org, git.Repo), git.Branch
 }
 
@@ -35,7 +35,7 @@ func New(gitUrlStr string) (*GitUrl, error) {
 		return nil, fmt.Errorf("Not a valid git url %+s", gitUrlStr)
 	}
 
-	gitUrl := GitUrl {
+	gitUrl := GitUrl{
 		Protocol: parseResult[1],
 		Host:     parseResult[2],
 		Org:      parseResult[3],
