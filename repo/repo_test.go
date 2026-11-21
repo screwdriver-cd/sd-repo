@@ -1,3 +1,70 @@
+/*
+ * Third-party notices for copied portions of this test file.
+ *
+ * The Go-derived portions of fakeExecCommand and TestHelperProcess are adapted
+ * from the os/exec tests (process setup and argument handling).
+ * Source: https://github.com/golang/go/blob/go1.10.2/src/os/exec/exec_test.go
+ * License: BSD-3-Clause
+ * License source: https://github.com/golang/go/blob/go1.10.2/LICENSE
+ *
+ * Copyright (c) 2009 The Go Authors. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *    * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *    * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *    * Neither the name of Google Inc. nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The article-derived portions of fakeExecCommand, TestHelperProcess, and the
+ * execCommand mock setup in the tests are adapted from Nate Finch's example.
+ * Article: https://npf.io/2015/06/testing-exec-command/
+ * Source: https://github.com/natefinch/npf/blob/d3c5269f7f2c598624c2dab84b7c039be4de7610/content/blog/testing-exec-command.md
+ * License: MIT
+ * License source: https://github.com/natefinch/npf/blob/d3c5269f7f2c598624c2dab84b7c039be4de7610/LICENSE
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Nate Finch
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package repo
 
 import (
@@ -135,9 +202,8 @@ func TestFindProjectDoesNotExist(t *testing.T) {
 	assert.Nil(t, project)
 }
 
-// This is a fake test for mocking out exec calls.
-// See https://golang.org/src/os/exec/exec_test.go and
-// https://npf.io/2015/06/testing-exec-command/ for more info
+// TestHelperProcess mocks repo commands in a child test process.
+// See the third-party notices at the beginning of this file.
 func TestHelperProcess(t *testing.T) {
 	if os.Getenv("GO_WANT_HELPER_PROCESS") != "1" {
 		return
